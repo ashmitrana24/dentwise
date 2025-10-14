@@ -10,6 +10,7 @@
     "format": "biome format --write"
   },
   "dependencies": {
+    "@clerk/clerk-sdk-node": "^4.13.23",
     "@clerk/nextjs": "^6.33.1",
     "@hookform/resolvers": "^5.2.2",
     "@prisma/client": "^6.16.2",
