@@ -18,6 +18,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "DentWise - AI Powered Dental Assistant",
   description: "Revolutionize your dental practice with DentWise, the AI-powered assistant that streamlines patient interactions and enhances care.",
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
 };
 
 export default function RootLayout({
