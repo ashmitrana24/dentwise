@@ -4,6 +4,7 @@ import "./globals.css";
 import {ClerkProvider} from '@clerk/nextjs'
 import UserSync from "@/components/UserSync";
 import TanStackProvider from "@/components/providers/TanStackProvider";
+import ClickSpark from "@/components/ClickSpark/ClickSpark";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,8 +47,18 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}>
-          <UserSync />
-        {children}
+          <ClickSpark
+            sparkColor="#e78a53"
+            sparkSize={8}
+            sparkRadius={20}
+            sparkCount={12}
+            duration={500}
+            easing="ease-out"
+            extraScale={1.2}
+          >
+            <UserSync />
+            {children}
+          </ClickSpark>
       </body>
     </html>
     </ClerkProvider>
