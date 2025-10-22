@@ -45,25 +45,11 @@ export async function getUserAppointments() {
     if (!userId) throw new Error("You must be logged in to view appointments");
 
     // find user by clerkId from authenticated session
-    let user = await prisma.user.findUnique({ where: { clerkId: userId } });
+    const user = await prisma.user.findUnique({ where: { clerkId: userId } });
     
-    // If user doesn't exist, create them (this handles the case where user sync hasn't happened yet)
+    // If user doesn't exist yet (new signup), return empty array
     if (!user) {
-      // Get user details from Clerk
-      const { currentUser } = await import("@clerk/nextjs/server");
-      const clerkUser = await currentUser();
-      
-      if (!clerkUser) throw new Error("Unable to get user details from Clerk");
-
-      user = await prisma.user.create({
-        data: {
-          clerkId: userId,
-          firstName: clerkUser.firstName,
-          lastName: clerkUser.lastName,
-          email: clerkUser.emailAddresses[0]?.emailAddress || "",
-          phone: clerkUser.phoneNumbers[0]?.phoneNumber || "",
-        },
-      });
+      return [];
     }
 
     const appointments = await prisma.appointment.findMany({
@@ -87,25 +73,11 @@ export async function getUserAppointmentStats() {
     const { userId } = await auth();
     if (!userId) throw new Error("You must be authenticated");
 
-    let user = await prisma.user.findUnique({ where: { clerkId: userId } });
+    const user = await prisma.user.findUnique({ where: { clerkId: userId } });
 
-    // If user doesn't exist, create them (this handles the case where user sync hasn't happened yet)
+    // If user doesn't exist yet (new signup), return default stats
     if (!user) {
-      // Get user details from Clerk
-      const { currentUser } = await import("@clerk/nextjs/server");
-      const clerkUser = await currentUser();
-      
-      if (!clerkUser) throw new Error("Unable to get user details from Clerk");
-
-      user = await prisma.user.create({
-        data: {
-          clerkId: userId,
-          firstName: clerkUser.firstName,
-          lastName: clerkUser.lastName,
-          email: clerkUser.emailAddresses[0]?.emailAddress || "",
-          phone: clerkUser.phoneNumbers[0]?.phoneNumber || "",
-        },
-      });
+      return { totalAppointments: 0, completedAppointments: 0 };
     }
 
     // these calls will run in parallel, instead of waiting each other
@@ -167,26 +139,8 @@ export async function bookAppointment(input: BookAppointmentInput) {
       throw new Error("Doctor, date, and time are required");
     }
 
-    let user = await prisma.user.findUnique({ where: { clerkId: userId } });
-    
-    // If user doesn't exist, create them (this handles the case where user sync hasn't happened yet)
-    if (!user) {
-      // Get user details from Clerk
-      const { currentUser } = await import("@clerk/nextjs/server");
-      const clerkUser = await currentUser();
-      
-      if (!clerkUser) throw new Error("Unable to get user details from Clerk");
-
-      user = await prisma.user.create({
-        data: {
-          clerkId: userId,
-          firstName: clerkUser.firstName,
-          lastName: clerkUser.lastName,
-          email: clerkUser.emailAddresses[0]?.emailAddress || "",
-          phone: clerkUser.phoneNumbers[0]?.phoneNumber || "",
-        },
-      });
-    }
+    const user = await prisma.user.findUnique({ where: { clerkId: userId } });
+    if (!user) throw new Error("User not found. Please refresh the page and try again.");
 
     const appointment = await prisma.appointment.create({
       data: {
