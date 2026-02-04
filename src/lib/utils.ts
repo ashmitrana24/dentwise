@@ -28,6 +28,7 @@ export const formatPhoneNumber = (value: string) => {
   // Limit to 10 digits max
   formattedNumber = formattedNumber.slice(0, 10);
 
+
   const length = formattedNumber.length;
 
   if (length < 6) {

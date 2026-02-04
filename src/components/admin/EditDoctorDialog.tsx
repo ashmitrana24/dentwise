@@ -40,6 +40,7 @@ function EditDoctorDialog({ doctor, isOpen, onClose }: EditDoctorDialogProps) {
     }
   };
 
+
   const handleClose = () => {
     onClose();
     setEditingDoctor(null);

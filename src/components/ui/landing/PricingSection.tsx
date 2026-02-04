@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { SignUpButton } from "@clerk/nextjs";
 import { CheckCircleIcon } from "lucide-react";
 
+
 function PricingSection() {
   return (
     <section className="relative py-32 px-6 overflow-hidden bg-gradient-to-b from-background via-muted/3 to-background">
@@ -77,7 +78,6 @@ function PricingSection() {
               </div>
             </div>
           </div>
-
           {/* Pro Plan - Featured */}
           <div className="relative group">
             {/* Popular Badge */}
