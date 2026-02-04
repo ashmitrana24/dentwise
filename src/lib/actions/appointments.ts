@@ -64,7 +64,7 @@ export async function getUserAppointments() {
     return appointments.map(transformAppointment);
   } catch (error) {
     console.error("Error fetching user appointments:", error);
-    throw new Error("Failed to fetch user appointments");
+    throw Error("Failed to fetch user appointments");
   }
 }
 
